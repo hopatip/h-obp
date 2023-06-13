@@ -1,0 +1,509 @@
+#include <iostream>
+#include <stdio.h>
+#include <cstring>
+#include <string.h>
+#include <ios>
+#include <limits>
+#include <stdlib.h>
+#define lcb 10 // library capacity for Book
+using namespace std;
+//struct's *****************************************************************************************************************
+struct date
+{
+    int year;
+    int month;
+    int day;
+};
+//forward declaration *****************************************************************************************************************
+class library;
+class book;
+class manager;
+class member;
+//library class *****************************************************************************************************************
+class library
+{
+    string library_name;
+public:
+    library ()
+    {
+
+        getline(cin,library_name);
+    }
+    void Display(){cout<<"**********************************WELCOME TO\" "<<library_name<<" \"LIBRARY**********************************"<<endl;}
+
+};
+//book class *****************************************************************************************************************
+class book
+{
+//class parameters*********************************************************
+public:
+    friend class manager;
+    friend class member;
+    string book_name;
+    string author;
+    int publish_date;
+    int code;
+    static int c_code;
+//class constructor*********************************************************
+
+//class functions*********************************************************
+    public:
+    void Display()
+    {
+        cout<<endl<<endl;
+        cout<<"CODE \""<<code<<"\""<<endl;
+        cout<<"Name \""<<book_name<<"\""<<endl;
+        cout<<"Author \""<<author<<"\""<<endl;
+        cout<<"Published in \""<<publish_date<<"\""<<endl;
+        cout<<endl;
+    }
+};
+//manager class *****************************************************************************************************************
+class manager
+{
+//class parameters*********************************************************
+public:
+    string password;
+//class constructor*********************************************************
+    manager (){password={"12345"};}
+//class functions*********************************************************
+//change password function
+    manager changepassword()
+    {
+        manager a;
+        cin.ignore();
+        string Tpassword;
+        cout<<"enter new password :";
+        getline(cin,Tpassword);
+        a.password=Tpassword;
+        return a;
+
+    }
+//find function
+    void find_book(book a[])
+    {
+       int n;
+       cout<<"how do you want to find your book ?"<<endl<<"1.book name"<<endl<<"2.author name"<<endl<<"3.publish date"<<endl<<"4.book CODE"<<endl;
+       cin>>n;
+       switch (n)
+       {
+       case 1 :
+        {
+            string testB;
+            cout<<"Enter book name :";
+            cin.ignore();
+            cin>>testB;
+            for (int i=0;i<lcb;i++)
+            {
+                if(testB==a[i].book_name)
+                {
+                    a[i].Display();
+                }
+
+
+            }
+            break;
+        }
+       case 2 :
+        {
+            string testA;
+            cout<<"Enter book author :";
+            cin.ignore();
+            getline(cin,testA);
+            for (int i=0;i<lcb;i++)
+            {
+                if(testA==a[i].author)
+                {
+                    a[i].Display();
+                }
+            }
+            break;
+        }
+        case 3 :
+        {
+            int testP;
+            cout<<"Enter publish date :";
+            cin>>testP;
+            for (int i=0;i<lcb;i++)
+            {
+                if(testP==a[i].publish_date)
+                {
+                    a[i].Display();
+                }
+            }
+            break;
+        }
+        case 4 :
+        {
+            int testC;
+            cout<<"Enter book code :";
+            cin>>testC;
+            for (int i=0;i<lcb;i++)
+            {
+                if(testC==a[i].code)
+                {
+                    a[i].Display();
+                }
+            }
+            break;
+        }
+       }
+    }
+//add book function
+    book add_book()
+    {
+        book a;
+        cin.ignore();
+        cout<<"enter book name :";
+        getline(cin,a.book_name);
+        cout<<"enter author name :";
+        getline(cin,a.author);
+        cout<<"enter publish date :";
+        cin>>a.publish_date;
+        cin.ignore();
+        a.code=a.c_code;
+        a.c_code++;
+
+        return a;
+
+    }
+//edit book function
+    book edit_book(int k)
+    {
+        book a;
+                cin.ignore();
+                string new_name;
+                string new_author;
+                int new_publish;
+                cout<<"Enter a new name for book :";
+                getline(cin,new_name);
+                a.book_name=new_name;
+                cout<<"Enter a new author name for book :";
+                getline(cin,new_author);
+                a.author=new_author;
+                cout<<"Enter a new publish date for book :";
+                cin>>new_publish;
+                a.publish_date=new_publish;
+                a.code=k;
+        return a;
+    }
+//manager panel function
+
+
+};
+//static parameters*********************************************************
+int book :: c_code = 1;
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+int main()
+{
+//parameters for main*********************************************************
+    static int book_num=0;
+    book bo[lcb];
+//the main :") *********************************************************
+    cout<<"Hello! we have a library and we want you to name it."<<endl<<"Please Enter a name for library :)"<<endl;
+    library a;
+    manager b;
+    system("cls");
+    a.Display();
+    int p=1;//for log in panel
+    int t=1;//for manager panel
+    int q=1;//for manager ability
+//panel for log in *********************************************************
+    while (1)
+    {
+        int k;
+        cout <<"You want to log in as ..."<<endl<<"1.manager"<<endl<<"2.member"<<endl<<"3.EXIT"<<endl;
+        cin>>k;
+//chose how to log in *********************************************************
+        switch (k)
+        {
+//panel for manager *********************************************************
+        case 1 :
+            {
+//manager log in*********************************************************
+                while (1)
+                {
+                    if(q==2)
+                    {
+                        q=1;
+                        break;
+                    }
+                    system("cls");
+                    string Tpassword;
+                    cin.ignore();
+                    cout<<"Enter password : ";
+                    getline(cin,Tpassword);
+                    if (Tpassword==b.password)
+//manager ability *********************************************************
+                    {
+                        system("cls");
+                        cout<<"-------- HI MANAGER --------"<<endl;
+//manager ability *********************************************************
+                        while (1)
+                        {
+                            cout<<"-what do you want to do ?"<<endl<<"1.add book"<<endl<<"2.edit book"<<endl<<"3.show book list"<<endl<<"4.show member list"<<endl;
+                            cout<<"5.find book"<<endl<<"6.change password"<<endl<<"7.show library capaciry"<<endl<<"8.exit"<<endl;
+                            cin>>k;
+                            switch (k)
+                            {
+//add book*********************************************************
+                            case 1 :
+                                {
+                                        system("cls");
+                                        cout<<"how many books do you want to add ?";
+                                        cin>>k;
+                                        int t=book_num;
+                                        k=k+book_num;
+                                        for (t;t<k;t++)
+                                        {
+                                            bo[t]=b.add_book();
+                                            book_num++;
+                                        }
+                                        t=0;
+                                        cout<<"DONE !"<<endl<<"back to manager panel(press one)"<<endl;
+                                        cin>>k;
+                                        if (k==1)
+                                        {
+                                            system("cls");
+                                            break;
+                                        }
+                                }
+//edit book *********************************************************
+                            case 2 :
+                                {
+                                    if (book_num==0)
+                                  {
+                                      system("cls");
+                                      cout<<"THERE IS NO BOOK IN THE LIBRARY"<<endl;
+                                      cout<<"back to manager panel (press one)";
+                                      cin>>k;
+                                      if (k==1)
+                                      {
+                                        system("cls");
+                                        break;
+                                      }
+
+                                  }
+                                  else
+                                  {
+                                    system("cls");
+                                    cout<<"for using this ability you should have the book code"<<endl;
+                                    cout<<"1.i have it let's edit the book !"<<endl<<"2.i don't have it (back to manager panel and use find book)"<<endl;
+                                    cin>>k;
+                                    if (k==2)
+                                    {
+                                        system("cls");
+                                        break;
+                                    }
+                                    else
+                                    {
+                                        system("cls");
+                                        int h=0;
+                                        cout<<"ok enter the book code : ";
+                                        cin>>k;
+                                        for (int i=0;i<book_num;i++)
+                                        {
+                                            if(k==bo[i].code)
+                                            {
+                                                h=1;
+                                                break;
+                                            }
+
+                                        }
+                                        if (h==1)
+                                        {
+                                            system("cls");
+                                            cout<<"ok you want to edit this book ";
+                                            k--;
+                                            bo[k].Display();
+                                            bo[k]=b.edit_book(++k);
+                                            cout<<"ok book information edited,this is your book now ";
+                                            bo[k].Display();
+                                            cout<<"back to manager panel (press one)";
+                                            cin>>k;
+                                            if (k==1)
+                                            {
+                                                system("cls");
+                                                break;
+                                            }
+
+                                        }
+                                        else
+                                        {
+                                            cout<<"THIS IS NOT A BOOK CODE"<<endl;
+                                            cout<<"back to manager panel (press one)";
+                                            cin>>k;
+                                            if (k==1)
+                                            {
+                                                system("cls");
+                                                break;
+                                            }
+
+                                        }
+                                    }
+
+
+                                  }
+
+
+                                }
+//show book list *********************************************************
+                            case 3 :
+                                {
+                                    if (book_num==0)
+                                    {
+                                      system("cls");
+                                      cout<<"THERE IS NO BOOK IN THE LIBRARY"<<endl;
+                                      cout<<"back to manager panel (press one)";
+                                      cin>>k;
+                                      if (k==1)
+                                      {
+                                        system("cls");
+                                        break;
+                                      }
+                                    }
+                                    else
+                                    {
+                                        for (int i=0;i<book_num;i++)
+                                            bo[i].Display();
+                                        cout<<"back to manager panel (press one)";
+                                        cin>>k;
+                                        if (k==1)
+                                        {
+                                          system("cls");
+                                          break;
+                                        }
+
+                                    }
+
+
+                                }
+//show member list  *********************************************************
+                            case 4 :
+                                {
+
+                                }
+//find book *********************************************************
+                            case 5 :
+                                {
+                                    if (book_num==0)
+                                    {
+                                      system("cls");
+                                      cout<<"THERE IS NO BOOK IN THE LIBRARY"<<endl;
+                                      cout<<"back to manager panel (press one)";
+                                      cin>>k;
+                                      if (k==1)
+                                      {
+                                        system("cls");
+                                        break;
+                                      }
+                                    }
+                                    else
+                                    {
+                                        system("cls");
+                                        b.find_book(bo);
+                                        cout<<"if no book is shown then we don't have your desired book"<<endl;
+                                        cout<<"back to manager panel (press one)";
+                                        cin>>k;
+                                        if (k==1)
+                                        {
+                                            system("cls");
+                                            break;
+                                        }
+                                    }
+
+
+                                }
+//change password *********************************************************
+                            case 6 :
+                                {
+                                    system("cls");
+                                    b=b.changepassword();
+                                    cout<<"back to manager panel (press one)";
+                                    cin>>k;
+                                    if (k==1)
+                                    {
+                                        system("cls");
+                                        break;
+                                    }
+
+
+                                }
+//change password *********************************************************
+                            case 7 :
+                                {
+                                    system("cls");
+                                    cout<<"library capacity is :"<<lcb<<endl;
+                                    cout<<"back to manager panel (press one)";
+                                    cin>>k;
+                                    if (k==1)
+                                    {
+                                        system("cls");
+                                        break;
+                                    }
+
+                                }
+//exit  *********************************************************
+                            case 8 :
+                                {
+                                  q++;
+                                  break;
+                                }
+                            }
+                            if (q==2)
+                            {
+                                system("cls");
+                                break;
+                            }
+                        }
+//manager ability *********************************************************
+                    }
+//what to do after wrong password *********************************************************
+                    else
+                    {
+                        system("cls");
+                        cout<<"PASSWORD IS ISCORRECT !!"<<endl<<endl;
+                        cout<<"what do you want to do ?"<<endl<<"1.try again"<<endl<<"2.log in as another user"<<endl;
+                        cin>>k;
+                        switch(k)
+                        {
+                        case 1 :
+                            {
+                                break;
+                            }
+                        case 2 :
+                            {
+                                t++;
+                                break;
+                            }
+                        }
+                        if (t==2){break;}
+                    }
+//end of (what to do after wrong password)*********************************************************
+                }
+//end of manager log in*********************************************************
+            }
+//end of manager panel *********************************************************
+//panel for member *********************************************************
+            case 2 :
+                {
+
+                }
+//end of member panel *********************************************************
+//exit panel *********************************************************
+            case 3 :
+                {
+                    p++;
+                    break;
+                }
+//end of exit panel *********************************************************
+        }
+        if (p==2) {break;}
+//end of (chose how to log in) *********************************************************
+    }
+//end of panel for log in *********************************************************
+return 0;
+}// end of program *********************************************************
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
